@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome-->
+    <script src="https://kit.fontawesome.com/94d106b433.js" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
+    <title>Calculator App</title>
+</head>
+<body class="d-flex flex-column min-vh-100" style="background-color: #F5F5F5">
+
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <strong><i class="fas fa-calculator"></i>&nbsp Calculator App</strong>
+            </a>
+        </div>
+    </nav>
+
+    <div class="wrapper flex-grow-1">
+        <div class="container-fluid" style="margin-bottom: 1rem;">
+            <div class="row">
+                <div class="col-md-8" style="margin: 1rem auto 0 auto;">
+                    <div class="card" style="margin-bottom: 1rem;">
+                        <div class="card-body">
+                            <p class="lead"><strong>Hello there!<br> This calculator is built using "ping pong" algorithm
+                                (alternative to Reverse Polish notation), without eval() etc.</strong></p>
+                            <hr>
+                            <p>Allowed operations: +, -, *, /, **, use of parentheses. Spaces don't matter.</p>
+                            <p>Negative numbers should be written as: (-34), float numbers: 3.4</p>
+                            <p>Expression example: ((-2.3) + 3 ** (2 - 2)) * 2.2 + (6/(3 + 3)* (-2)) ** 2</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="GET" class="d-flex" action="{% url 'calculate' %}">
+                                <input type="search" class="form-control me-2" name="expression" id="expression"
+                                       placeholder="Input Expression">
+                                <button type="submit" class="btn btn-outline-success">Calculate</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div>
+                <a class="navbar-brand" href="https://github.com/anvandev/Calculator"><i class="fab fa-github"></i></a>
+            </div>
+            <div class="justify-content-end navbar-nav">
+                <span class="nav-link active"><i class="fas fa-envelope"></i> ans.vanyan@gmail.com</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Optional JavaScript; Option 2: Separate Popper and Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"
+            integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"
+            integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG"
+            crossorigin="anonymous"></script>
+</body>
+</html>
