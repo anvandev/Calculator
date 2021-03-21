@@ -1,1 +1,5 @@
-Calculator for expressions like: (2 + 3 ** (2 - 2)) * 2.2 + (6 / (3 + 3)) ** 2
+This calculator is built using "ping pong" algorithm (alternative to Reverse Polish notation), without eval() etc.
+Allowed operations: +, -, *, /, **, use of parentheses.  Spaces don't matter.
+Negative numbers should be written as: (-34), float numbers: 3.4
+
+![image](https://github.com/anvandev/Calculator/blob/master/static/img/img.png)
