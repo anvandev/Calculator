@@ -31,8 +31,8 @@
           <div class="col-md-8" style="margin: 1rem auto 1rem auto;">
             <div class="card">
               <div class="card-body">
-                <p class="lead"><strong>Hello there!<br> This calculator is built using "ping pong" algorithm
-                  (alternative to Reverse Polish notation), without eval() etc.</strong></p>
+                <h5>Hello there!<br> This calculator is built using "ping pong" algorithm
+                  (alternative to Reverse Polish notation), without eval() etc.</h5>
                 <hr>
                 <p>Allowed operations: +, -, *, /, **, use of parentheses. Spaces don't matter.</p>
                 <p>Negative numbers should be written as: (-34), float numbers: 3.4</p>
@@ -45,13 +45,12 @@
           <div class="col-md-8" style="margin: 0 auto 0 auto;">
             {% if error %}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <strong>Error! </strong> {{ message }}
+              <b>Oops!</b> {{ message }} <br><b>Check your expression:</b> {{ expression }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            {% endif %}
-            {% if answer %}
+            {% elif answer %}
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-              {{ expression }} = <strong>{{ answer }}</strong>
+              {{ expression }} = <b>{{ answer }}</b>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             {% endif %}
@@ -62,8 +61,7 @@
             <div class="card">
               <div class="card-body">
                 <form method="GET" class="d-flex" action="{% url 'calculate' %}">
-                  <input type="search" class="form-control me-2" name="expression" id="expression"
-                         placeholder="Input Expression">
+                  <input type="search" class="form-control me-2" name="expression" placeholder="Input Expression">
                   <button type="submit" class="btn btn-outline-success">Calculate</button>
                 </form>
               </div>

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .utils import clear_and_convert, calculate_expression
+from .utils import calculate_expression
 
 
 def home(request):
@@ -7,18 +7,19 @@ def home(request):
 
 
 def calculate(request):
+    error = True
+    answer = False
     expression = request.GET['expression']
+    message = None
     try:
-        converted_expression = clear_and_convert(expression)
-        answer = calculate_expression(converted_expression)
-        return render(request, 'calculator/main.html', {'expression': expression,
-                                                        'error': False,
-                                                        'answer': answer})
-    except Exception as e:
-        message = e
-        return render(request, 'calculator/main.html', {'expression': expression,
-                                                        'error': True,
-                                                        'message': message})
-    except:
-        return render(request, 'calculator/main.html', {'expression': expression,
-                                                        'error': True})
+        answer = calculate_expression(expression)
+        error = False
+    except ValueError as err:
+        message = err
+    except Exception as ex:
+        message = f'Unexpected error: {ex}.'
+    finally:
+        return render(request, 'calculator/main.html', {'error': error,
+                                                        'answer': answer,
+                                                        'message': message,
+                                                        'expression': expression})
