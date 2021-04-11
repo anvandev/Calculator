@@ -93,47 +93,50 @@ def clear_and_convert(string_math_expression):
     for element in cleared_expression:
         if element not in check_list:
             raise ValueError(f'Houston, we have a problem. Element "{element}" in expression is not correct.')
-    # find multi-digit numbers and create new list with int
+    # find multi-digit numbers and create new list num_exp with int
     num_exp = []
-    i = 0
-    while i < len(cleared_expression):
-        number = ''
-        while i < len(cleared_expression) and cleared_expression[i].isdigit():
-            number += cleared_expression[i]
-            if i+1 == len(cleared_expression) or not cleared_expression[i+1].isdigit():
+    number = ''
+    len_cleared_expression = len(cleared_expression)
+    for i, element in enumerate(cleared_expression):
+        if element.isdigit():
+            number += element
+            if i == len_cleared_expression - 1 or not cleared_expression[i + 1].isdigit():
                 num_exp.append(int(number))
-            i += 1
-        if i < len(cleared_expression):
-            num_exp.append(cleared_expression[i])
-        i += 1
+                number = ''
+        else:
+            num_exp.append(element)
     # find float numbers and update list num_exp
     while '.' in num_exp:
-        if (num_exp.index('.') != len(num_exp)-1
-                and num_exp.index('.') != 0
-                and isinstance(num_exp[num_exp.index('.')-1], int)
-                and isinstance(num_exp[num_exp.index('.')+1], int)):
-            float_number = float(str(num_exp[num_exp.index('.')-1])
-                                 + num_exp[num_exp.index('.')]
-                                 + str(num_exp[num_exp.index('.')+1]))
-            num_exp[num_exp.index('.')+1] = float_number
-            del num_exp[num_exp.index('.')-1:num_exp.index('.')+1]
+        i = num_exp.index('.')
+        if (i != 0 and i != len(num_exp) - 1
+                and isinstance(num_exp[i - 1], int)
+                and isinstance(num_exp[i + 1], int)):
+            float_number = float(str(num_exp[i - 1]) + num_exp[i] + str(num_exp[i + 1]))
+            num_exp[i + 1] = float_number
+            del num_exp[i - 1:i + 1]
         else:
             raise ValueError('Something wrong with ".".')
     # find negative numbers and update list num_exp
-    i = 0
-    while '(' in num_exp and i < len(num_exp.copy()):
-        if num_exp[i] == '(' and i+3 < len(num_exp) and num_exp[i+1] == '-' and num_exp[i+3] == ')':
-            if isinstance(num_exp[i+2], int):
-                negative_number = int('-' + str(num_exp[i+2]))
-                num_exp[i + 3] = negative_number
-                del num_exp[i:i + 3]
-            elif isinstance(num_exp[i + 2], float):
-                negative_number = float('-' + str(num_exp[i+2]))
-                num_exp[i + 3] = negative_number
-                del num_exp[i:i + 3]
+    len_num_exp = len(num_exp)
+    float_negative_exp = []
+    not_append_index = None
+    negative_check_list = ['+', '-', '*', '/', '(']
+    for i, element in enumerate(num_exp):
+        if element == '-':
+            if i == len_num_exp - 1:
+                raise ValueError('Something wrong with "-".')
+            elif isinstance(num_exp[i + 1], int) and (i == 0 or num_exp[i - 1] in negative_check_list):
+                n_number = int('-' + str(num_exp[i + 1]))
+                float_negative_exp.append(n_number)
+                not_append_index = i + 1
+            elif isinstance(num_exp[i + 1], float) and (i == 0 or num_exp[i - 1] in negative_check_list):
+                n_number = float('-' + str(num_exp[i + 1]))
+                float_negative_exp.append(n_number)
+                not_append_index = i + 1
             else:
-                raise ValueError('Something wrong with "(-number)".')
-        i += 1
+                float_negative_exp.append(element)
+        elif i != not_append_index:
+            float_negative_exp.append(element)
     # find exponent operator and create new list with final converted expression
     converted_expression = []
     i = 0
