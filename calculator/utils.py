@@ -100,7 +100,7 @@ def clear_and_convert(string_math_expression):
     for i, element in enumerate(cleared_expression):
         if element.isdigit():
             number += element
-            if i == len_cleared_expression - 1 or not cleared_expression[i + 1].isdigit():
+            if i == len_cleared_expression - 1 or not cleared_expression[i+1].isdigit():
                 num_exp.append(int(number))
                 number = ''
         else:
@@ -109,43 +109,46 @@ def clear_and_convert(string_math_expression):
     while '.' in num_exp:
         i = num_exp.index('.')
         if (i != 0 and i != len(num_exp) - 1
-                and isinstance(num_exp[i - 1], int)
-                and isinstance(num_exp[i + 1], int)):
-            float_number = float(str(num_exp[i - 1]) + num_exp[i] + str(num_exp[i + 1]))
-            num_exp[i + 1] = float_number
-            del num_exp[i - 1:i + 1]
+                and isinstance(num_exp[i-1], int)
+                and isinstance(num_exp[i+1], int)):
+            float_number = float(str(num_exp[i-1]) + num_exp[i] + str(num_exp[i+1]))
+            num_exp[i+1] = float_number
+            del num_exp[i-1:i+1]
         else:
             raise ValueError('Something wrong with ".".')
-    # find negative numbers and update list num_exp
+    # find negative numbers and create new list with negative numbers
+    neg_exp = []
+    excluded_index = None
+    neg_check_list = ['+', '-', '*', '/', '(']
     len_num_exp = len(num_exp)
-    float_negative_exp = []
-    not_append_index = None
-    negative_check_list = ['+', '-', '*', '/', '(']
     for i, element in enumerate(num_exp):
         if element == '-':
             if i == len_num_exp - 1:
                 raise ValueError('Something wrong with "-".')
-            elif isinstance(num_exp[i + 1], int) and (i == 0 or num_exp[i - 1] in negative_check_list):
-                n_number = int('-' + str(num_exp[i + 1]))
-                float_negative_exp.append(n_number)
-                not_append_index = i + 1
-            elif isinstance(num_exp[i + 1], float) and (i == 0 or num_exp[i - 1] in negative_check_list):
-                n_number = float('-' + str(num_exp[i + 1]))
-                float_negative_exp.append(n_number)
-                not_append_index = i + 1
+            elif isinstance(num_exp[i+1], int) and (i == 0 or num_exp[i-1] in neg_check_list):
+                n_number = int('-' + str(num_exp[i+1]))
+                neg_exp.append(n_number)
+                excluded_index = i + 1
+            elif isinstance(num_exp[i+1], float) and (i == 0 or num_exp[i-1] in neg_check_list):
+                n_number = float('-' + str(num_exp[i+1]))
+                neg_exp.append(n_number)
+                excluded_index = i + 1
             else:
-                float_negative_exp.append(element)
-        elif i != not_append_index:
-            float_negative_exp.append(element)
+                neg_exp.append(element)
+        elif i != excluded_index:
+            neg_exp.append(element)
     # find exponent operator and create new list with final converted expression
     converted_expression = []
     i = 0
-    while i < len(num_exp):
-        if num_exp[i] == '*' and i != len(num_exp)-1 and num_exp[i+1] == '*':
+    len_neg_exp = len(neg_exp)
+    while i < len_neg_exp:
+        if (i == 0 or i == len_neg_exp - 1) and neg_exp[i] == '*':
+            raise ValueError('Something wrong with "*".')
+        elif neg_exp[i] == '*' and neg_exp[i+1] == '*':
             converted_expression.append('**')
             i += 2
         else:
-            converted_expression.append(num_exp[i])
+            converted_expression.append(neg_exp[i])
             i += 1
     return converted_expression
 
